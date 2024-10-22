@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drive Safe - Notifications</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="main.html">
+      <i class="fas fa-car-side me-2"></i>
+      Drive Safe
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="main.html">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="main.html">Assignments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="main.html">Schedule</a>
+        </li>
+      </ul>
+      <!-- Added right-aligned items -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="notifications.html"><i class="fas fa-bell me-1"></i> Notifications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html"><i class="fas fa-user me-1"></i> Profile</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body p-4">
+          <h2 class="card-title mb-4">Notification Preferences</h2>
+
+          <!-- Guest/User Toggle -->
+          <div class="btn-group w-100 mb-4" role="group">
+            <input type="radio" class="btn-check" name="userType" id="guestBtn" checked>
+            <label class="btn btn-outline-primary" for="guestBtn">Guest</label>
+
+            <input type="radio" class="btn-check" name="userType" id="userBtn">
+            <label class="btn btn-outline-primary" for="userBtn">Registered User</label>
+          </div>
+
+          <!-- Guest Form -->
+          <form id="guestForm">
+            <div class="mb-4">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" required>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0">Notification Categories</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="selectAll">
+                  <label class="form-check-label" for="selectAll">Select All</label>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input notification-check" type="checkbox" id="specialDeals">
+                    <label class="form-check-label" for="specialDeals">
+                      Special Deals & Promotions
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input notification-check" type="checkbox" id="vacantSlots">
+                    <label class="form-check-label" for="vacantSlots">
+                      Available Time Slots
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input notification-check" type="checkbox" id="newInstructors">
+                    <label class="form-check-label" for="newInstructors">
+                      New Instructors
+                    </label>
+                  </div>
+                  <div class="form-check mb-2">
+                    <input class="form-check-input notification-check" type="checkbox" id="newsUpdates">
+                    <label class="form-check-label" for="newsUpdates">
+                      News & Updates
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input notification-check" type="checkbox" id="carUpdates">
+                    <label class="form-check-label" for="carUpdates">
+                      New Cars & Vehicle Updates
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-check-label" for="terms">
+                  I agree to receive notifications and accept the terms of service
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Subscribe to Notifications</button>
+          </form>
+
+          <!-- User Login Form (initially hidden) -->
+          <form id="userForm" style="display: none;">
+            <div class="mb-4">
+              <label class="form-label">Username or Email</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Log In to Manage Notifications</button>
+            <p class="text-center mt-3">
+              <a href="profile.html">Don't have an account? Sign up</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle between guest and user forms
+  document.getElementById('guestBtn').addEventListener('change', function() {
+    document.getElementById('guestForm').style.display = 'block';
+    document.getElementById('userForm').style.display = 'none';
+  });
+
+  document.getElementById('userBtn').addEventListener('change', function() {
+    document.getElementById('guestForm').style.display = 'none';
+    document.getElementById('userForm').style.display = 'block';
+  });
+
+  // Handle select all functionality
+  document.getElementById('selectAll').addEventListener('change', function() {
+    const isChecked = this.checked;
+    document.querySelectorAll('.notification-check').forEach(checkbox => {
+      checkbox.checked = isChecked;
+    });
+  });
+
+  // Update select all when individual checkboxes change
+  document.querySelectorAll('.notification-check').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const allChecked = Array.from(document.querySelectorAll('.notification-check'))
+        .every(cb => cb.checked);
+      document.getElementById('selectAll').checked = allChecked;
+    });
+  });
+</script>
+</body>
+</html>

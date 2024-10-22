@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drive Safe Dashboard</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="styles.css" rel="stylesheet">
+
+  <!-- Inline styles for modal fixes -->
+  <style>
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+
+    .custom-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-open {
+      display: block;
+    }
+
+    body.modal-active {
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+<!-- Header -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="main.html">
+      <i class="fas fa-car-side me-2"></i>
+      Drive Safe
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="#overview">Overview</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#assignments">Assignments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#schedule">Schedule</a>
+        </li>
+      </ul>
+      <!-- Added right-aligned items -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="notifications.html"><i class="fas fa-bell me-1"></i> Notifications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html"><i class="fas fa-user me-1"></i> Profile</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="container">
+  <!-- Overview Section -->
+  <section id="overview" class="section slide-up">
+    <h2>Overview</h2>
+    <div class="grid grid-3">
+      <div class="stats-card" style="background-color: var(--primary-color);">
+        <i class="fas fa-users fa-2x mb-2"></i>
+        <h3>Total Clients</h3>
+        <p class="h2 mb-0">24</p>
+      </div>
+      <div class="stats-card" style="background-color: var(--success-color);">
+        <i class="fas fa-id-card fa-2x mb-2"></i>
+        <h3>Active Drivers</h3>
+        <p class="h2 mb-0">8</p>
+      </div>
+      <div class="stats-card" style="background-color: var(--info-color);">
+        <i class="fas fa-car fa-2x mb-2"></i>
+        <h3>Available Cars</h3>
+        <p class="h2 mb-0">12</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero Section with CTA -->
+  <section class="hero-section">
+    <div class="container text-center">
+      <h1 class="display-4 mb-4">Start Your Driving Journey Today</h1>
+      <p class="lead mb-4">Professional instructors, flexible scheduling, and personalized learning plans</p>
+      <button class="btn btn-light cta-button" onclick="showBookingOptions()">
+        Schedule Your First Lesson
+        <i class="fas fa-arrow-right ms-2"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Booking Options Modal -->
+  <div id="bookingOptionsModal" class="custom-modal">
+    <div class="text-center mb-4">
+      <h3>Choose Your Booking Method</h3>
+      <p class="text-muted">Select the option that works best for you</p>
+    </div>
+    <div class="d-grid gap-3">
+      <button class="btn btn-primary btn-lg" onclick="scheduleCall()">
+        <i class="fas fa-phone me-2"></i>
+        Schedule a Call
+        <small class="d-block text-light">Talk to our expert team</small>
+      </button>
+      <div class="text-center">- OR -</div>
+      <button class="btn btn-outline-primary btn-lg" onclick="window.location.href='login.html'">
+        <i class="fas fa-user me-2"></i>
+        Continue with Account
+        <small class="d-block">Book online instantly</small>
+      </button>
+    </div>
+    <button type="button" class="btn btn-link mt-3 w-100" onclick="hideBookingOptions()">
+      Cancel
+    </button>
+  </div>
+
+  <!-- Assignments Section -->
+  <section id="assignments" class="section slide-up">
+    <h2>Current Assignments</h2>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Driver Name</th>
+          <th>Car Details</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Kira Minkova</td>
+          <td>David Wilson</td>
+          <td>Toyota Corolla (ABC123)</td>
+          <td><span class="badge" style="background-color: var(--success-color);">Active</span></td>
+          <td>
+            <button class="btn btn-primary" onclick="showDetails(1)">
+              <i class="fas fa-info-circle"></i> Details
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Yuri Gagarin</td>
+          <td>Michael Brown</td>
+          <td>Honda Civic (XYZ789)</td>
+          <td><span class="badge" style="background-color: var(--warning-color);">Pending</span></td>
+          <td>
+            <button class="btn btn-primary" onclick="showDetails(2)">
+              <i class="fas fa-info-circle"></i> Details
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Schedule Section -->
+  <section id="schedule" class="section slide-up">
+    <h2>Weekly Schedule</h2>
+    <div class="table-responsive">
+      <div class="calendar-grid">
+        <div class="calendar-cell fw-bold">Time</div>
+        <div class="calendar-cell fw-bold">Monday</div>
+        <div class="calendar-cell fw-bold">Tuesday</div>
+        <div class="calendar-cell fw-bold">Wednesday</div>
+        <div class="calendar-cell fw-bold">Thursday</div>
+        <div class="calendar-cell fw-bold">Friday</div>
+
+        <div class="calendar-cell">9:00 AM</div>
+        <div class="calendar-cell" onclick="showBookingForm(this)"></div>
+        <div class="calendar-cell has-event" onclick="showSessionDetails(1)">Kira M.</div>
+        <div class="calendar-cell" onclick="showBookingForm(this)"></div>
+        <div class="calendar-cell has-event" onclick="showSessionDetails(2)">Yuri G.</div>
+        <div class="calendar-cell" onclick="showBookingForm(this)"></div>
+
+        <div class="calendar-cell">10:00 AM</div>
+        <div class="calendar-cell has-event" onclick="showSessionDetails(3)">Mike R.</div>
+        <div class="calendar-cell" onclick="showBookingForm(this)"></div>
+        <div class="calendar-cell has-event" onclick="showSessionDetails(4)">Emma W.</div>
+        <div class="calendar-cell" onclick="showBookingForm(this)"></div>
+        <div class="calendar-cell has-event" onclick="showSessionDetails(5)">James L.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Form Modal -->
+  <div id="bookingModal" class="custom-modal fade-in">
+    <h3>New Booking</h3>
+    <form id="bookingForm">
+      <div class="form-group">
+        <label class="form-label" for="driverName">Driver Name</label>
+        <input type="text" class="form-control" id="driverName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="clientName">Client Name</label>
+        <input type="text" class="form-control" id="clientName" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="carId">Car</label>
+        <select class="form-control" id="carId" required>
+          <option value="">Select a car</option>
+          <option value="1">Toyota Corolla (ABC123)</option>
+          <option value="2">Honda Civic (XYZ789)</option>
+          <option value="3">Ford Focus (DEF456)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="comments">Comments</label>
+        <textarea class="form-control" id="comments" rows="3"></textarea>
+      </div>
+      <div class="text-right mt-3">
+        <button type="button" class="btn btn-secondary me-2" onclick="hideModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Session Details Modal -->
+  <div id="detailsModal" class="custom-modal fade-in">
+    <h3>Session Details</h3>
+    <div id="sessionDetails"></div>
+    <div class="text-right mt-3">
+      <button type="button" class="btn btn-secondary" onclick="hideModal()">Close</button>
+    </div>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop fade-in"></div>
+</main>
+
+<!-- Add Reviews Section -->
+<section class="reviews-section">
+  <div class="container">
+    <h2 class="text-center mb-5">What Our Students Say</h2>
+    <div class="carousel-container">
+      <div class="row" id="reviewsCarousel">
+        <!-- Reviews will be populated by JavaScript -->
+      </div>
+      <div class="text-center review-navigation">
+        <button onclick="previousReviews()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button onclick="nextReviews()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="mt-5 py-4" style="background-color: var(--gray-100);">
+  <div class="container">
+    <div class="grid grid-3">
+      <div>
+        <h5>Drive Safe</h5>
+        <p>Making roads safer, one lesson at a time.</p>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <p>
+          Email: info@drivesafe.com<br>
+          Phone: (555) 123-4567
+        </p>
+      </div>
+      <div>
+        <h5>Follow Us</h5>
+        <div class="mt-2">
+          <a href="#" class="btn btn-primary me-2"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="btn btn-primary me-2"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="btn btn-primary"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <small>&copy; 2024 Drive Safe. All rights reserved.</small>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+  // Show booking form modal
+  function showBookingForm(cell) {
+    document.getElementById('bookingModal').classList.add('modal-open');
+    document.getElementById('modalBackdrop').classList.add('modal-open');
+    document.body.classList.add('modal-active');
+  }
+
+  // Show session details modal
+  function showSessionDetails(sessionId) {
+    const details = getSessionDetails(sessionId);
+    document.getElementById('sessionDetails').innerHTML = `
+            <div class="form-group">
+                <label class="form-label">Client</label>
+                <p>${details.client}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Driver</label>
+                <p>${details.driver}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Car</label>
+                <p>${details.car}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Pick-up Location</label>
+                <p>${details.pickup}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Time</label>
+                <p>${details.time}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Comments</label>
+                <p>${details.comments}</p>
+            </div>
+        `;
+
+    document.getElementById('detailsModal').classList.add('modal-open');
+    document.getElementById('modalBackdrop').classList.add('modal-open');
+    document.body.classList.add('modal-active');
+  }
+
+  // Hide modals
+  function hideModal() {
+    document.getElementById('bookingModal').classList.remove('modal-open');
+    document.getElementById('detailsModal').classList.remove('modal-open');
+    document.getElementById('modalBackdrop').classList.remove('modal-open');
+    document.body.classList.remove('modal-active');
+  }
+
+  // Show details
+  function showDetails(assignmentId) {
+    const details = {
+      1: {
+        client: 'Kira Minkova',
+        driver: 'David Wilson',
+        car: 'Toyota Corolla (ABC123)',
+        pickup: '123 Main St',
+        status: 'Active',
+        nextLesson: 'Tuesday, 9:00 AM',
+        progress: '3/10 lessons completed'
+      },
+      2: {
+        client: 'Yuri Gagarin',
+        driver: 'Michael Brown',
+        car: 'Honda Civic (XYZ789)',
+        pickup: '456 Oak Ave',
+        status: 'Pending',
+        nextLesson: 'Thursday, 10:00 AM',
+        progress: '1/10 lessons completed'
+      }
+    };
+
+    const assignment = details[assignmentId] || {
+      client: 'Unknown',
+      driver: 'Unknown',
+      car: 'Unknown',
+      pickup: 'Unknown',
+      status: 'Unknown',
+      nextLesson: 'Unknown',
+      progress: 'Unknown'
+    };
+
+    document.getElementById('sessionDetails').innerHTML = `
+        <div class="form-group">
+            <label class="form-label">Client</label>
+            <p>${assignment.client}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Driver</label>
+            <p>${assignment.driver}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Car</label>
+            <p>${assignment.car}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Pick-up Location</label>
+            <p>${assignment.pickup}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Status</label>
+            <p>${assignment.status}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Next Lesson</label>
+            <p>${assignment.nextLesson}</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Progress</label>
+            <p>${assignment.progress}</p>
+        </div>
+    `;
+
+    document.getElementById('detailsModal').classList.add('modal-open');
+    document.getElementById('modalBackdrop').classList.add('modal-open');
+    document.body.classList.add('modal-active');
+  }
+
+
+  // Close modal when clicking outside
+  document.getElementById('modalBackdrop').addEventListener('click', hideModal);
+
+  // Prevent modal close when clicking inside modal
+  document.querySelectorAll('.custom-modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  });
+
+  // Close modal with ESC key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      hideModal();
+    }
+  });
+
+  // Form submission handler
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Booking submitted successfully!');
+    hideModal();
+  });
+
+  // Mock function to get session details
+  function getSessionDetails(sessionId) {
+    const mockData = {
+      1: {
+        client: 'Kira Minkova',
+        driver: 'David Wilson',
+        car: 'Toyota Corolla (ABC123)',
+        pickup: '123 Main St',
+        time: 'Tuesday 9:00 AM',
+        comments: 'Second lesson - focusing on parallel parking'
+      },
+      2: {
+        client: 'Yuri Gagarin',
+        driver: 'Michael Brown',
+        car: 'Honda Civic (XYZ789)',
+        pickup: '456 Oak Ave',
+        time: 'Thursday 9:00 AM',
+        comments: 'First lesson - basics of driving'
+      }
+    };
+    return mockData[sessionId] || {
+      client: 'Unknown Client',
+      driver: 'Unknown Driver',
+      car: 'Unknown Car',
+      pickup: 'Unknown Location',
+      time: 'Unknown Time',
+      comments: 'No comments available'
+    };
+  }
+
+
+  // Booking Options Modal
+  function showBookingOptions() {
+    document.getElementById('bookingOptionsModal').classList.add('modal-open');
+    document.getElementById('modalBackdrop').classList.add('modal-open');
+    document.body.classList.add('modal-active');
+  }
+
+  function scheduleCall() {
+    hideBookingOptions(); // First hide the booking options modal
+    // This would typically open a calendar scheduling widget
+    alert('This would open a calendar scheduling widget (e.g., Calendly)');
+  }
+
+  // Function for specifically hiding the booking options modal
+  function hideBookingOptions() {
+    document.getElementById('bookingOptionsModal').classList.remove('modal-open');
+    document.getElementById('modalBackdrop').classList.remove('modal-open');
+    document.body.classList.remove('modal-active');
+  }
+
+  // Reviews Carousel
+  const reviews = [
+    {
+      name: "Sarah Johnson",
+      rating: 5,
+      text: "The best driving school I've ever been to! My instructor was patient and professional.",
+      date: "2 weeks ago"
+    },
+    {
+      name: "Michael Chen",
+      rating: 5,
+      text: "Passed my test on the first try thanks to the excellent instruction. Highly recommended!",
+      date: "1 month ago"
+    },
+    {
+      name: "Emily Williams",
+      rating: 4,
+      text: "Great experience overall. The flexible scheduling made it easy to fit lessons into my busy schedule.",
+      date: "3 weeks ago"
+    },
+    {
+      name: "David Martinez",
+      rating: 5,
+      text: "Very thorough instruction and helpful tips. Made learning to drive much less stressful.",
+      date: "1 week ago"
+    },
+    {
+      name: "Lisa Thompson",
+      rating: 5,
+      text: "Amazing instructors and modern cars. Worth every penny!",
+      date: "2 months ago"
+    },
+    {
+      name: "James Wilson",
+      rating: 4,
+      text: "Professional service and great communication throughout the learning process.",
+      date: "1 month ago"
+    }
+  ];
+
+  let currentReviewIndex = 0;
+  const reviewsPerPage = 3;
+
+  function renderReviews() {
+    const carousel = document.getElementById('reviewsCarousel');
+    carousel.innerHTML = '';
+
+    for (let i = 0; i < reviewsPerPage; i++) {
+      const reviewIndex = (currentReviewIndex + i) % reviews.length;
+      const review = reviews[reviewIndex];
+
+      const col = document.createElement('div');
+      col.className = 'col-md-4 mb-4';
+
+      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+
+      col.innerHTML = `
+                    <div class="review-card">
+                        <h5>${review.name}</h5>
+                        <div class="star-rating">${stars}</div>
+                        <p class="mb-3">"${review.text}"</p>
+                        <small class="text-muted">${review.date}</small>
+                    </div>
+                `;
+
+      carousel.appendChild(col);
+    }
+  }
+
+  function nextReviews() {
+    currentReviewIndex = (currentReviewIndex + reviewsPerPage) % reviews.length;
+    renderReviews();
+  }
+
+  function previousReviews() {
+    currentReviewIndex = (currentReviewIndex - reviewsPerPage + reviews.length) % reviews.length;
+    renderReviews();
+  }
+
+  // Initialize reviews
+  renderReviews();
+
+  // Auto-rotate reviews every 5 seconds
+  setInterval(nextReviews, 5000);
+</script>
+</body>
+</html>
